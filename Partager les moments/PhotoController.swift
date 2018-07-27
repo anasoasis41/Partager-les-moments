@@ -96,6 +96,30 @@ class PhotoController: UIViewController, UIImagePickerControllerDelegate, UINavi
     }
     
     @IBAction func boutonPartagerAppuye(_ sender: Any) {
+        
+        var contenuPartager: [Any] = [Any]()
+        
+        if let image = photoPartager.image, image != #imageLiteral(resourceName: "profil.svg") {
+            contenuPartager.append(image)
+        }
+        
+        if textePartager.text != "", textePartager.text != texteVide {
+            contenuPartager.append(textePartager.text)
+        }
+        
+        let activity = UIActivityViewController(activityItems: contenuPartager, applicationActivities: nil)
+        
+        // faire un teste si c'est un ipad pour ne pas crasher
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let pop = activity.popoverPresentationController {
+                pop.sourceView = self.view
+                pop.sourceRect = CGRect(x: self.view.frame.midX, y: self.view.frame.midY, width: 0, height: 0)
+                pop.permittedArrowDirections = []
+            }
+        }
+        self.present(activity, animated: true) {
+            self.miseEnPlace()
+        }
     }
     
 
